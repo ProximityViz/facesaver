@@ -1,7 +1,19 @@
 <ion-view view-title="Account">
   <ion-content>
     <ion-list>
-    <ion-toggle  ng-model="settings.enableFriends">
+      <ion-item ui-sref="tab.account-login" ng-if="!account.loggedIn">
+        <button>Log In</button>
+      </ion-item>
+      <ion-item ui-sref="tab.account-register" ng-if="!account.loggedIn">
+        <button>Register</button>
+      </ion-item>
+      <ion-item ng-if="account.loggedIn">
+        Logged in as {{account.user.get('username')}}
+      </ion-item>
+      <ion-item ng-click="account.logOut()" ng-if="account.loggedIn">
+        <button>Log Out</button>
+      </ion-item>
+    <ion-toggle ng-model="settings.enableFriends">
         Enable Friends
     </ion-toggle>
     </ion-list>

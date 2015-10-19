@@ -1,11 +1,7 @@
-// Ionic Starter App
-
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
-// 'starter.services' is found in services.js
-// 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
+angular.module('app', [
+  'ionic', 
+  'app.controllers', 
+  'app.services'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -32,7 +28,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   $stateProvider
 
   // setup an abstract state for the tabs directive
-    .state('tab', {
+  .state('tab', {
     url: '/tab',
     abstract: true,
     templateUrl: 'templates/tabs.html'
@@ -40,46 +36,113 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
   // Each tab has its own nav history stack:
 
-  .state('tab.dash', {
-    url: '/dash',
+  .state('tab.people', {
+    url: '/people',
     views: {
-      'tab-dash': {
-        templateUrl: 'templates/tab-dash.html',
-        controller: 'DashCtrl'
+      'tab-people': {
+        templateUrl: 'templates/tab-people.html',
+        controller: 'PeopleCtrl as people'
+        // ,
+        // resolve: {
+        //   people: function(ParseFactory) {
+        //     return ParseFactory.getPeople();
+        //   }
+        // }
+      }
+    }
+  })
+  .state('tab.person-detail', {
+    url: '/people/:personId',
+    views: {
+      'tab-people': {
+        templateUrl: 'templates/person-detail.html',
+        controller: 'PersonCtrl as person'
       }
     }
   })
 
-  .state('tab.chats', {
-      url: '/chats',
+  .state('tab.groups', {
+      url: '/groups',
       views: {
-        'tab-chats': {
-          templateUrl: 'templates/tab-chats.html',
-          controller: 'ChatsCtrl'
+        'tab-groups': {
+          templateUrl: 'templates/tab-groups.html',
+          controller: 'GroupsCtrl as groups'
         }
       }
     })
-    .state('tab.chat-detail', {
-      url: '/chats/:chatId',
+    .state('tab.group-detail', {
+      url: '/groups/:groupId',
       views: {
-        'tab-chats': {
-          templateUrl: 'templates/chat-detail.html',
-          controller: 'ChatDetailCtrl'
+        'tab-groups': {
+          templateUrl: 'templates/group-detail.html',
+          controller: 'GroupDetailCtrl as group'
         }
       }
     })
+
+  .state('tab.new', {
+    url: '/new',
+    views: {
+      'tab-new': {
+        templateUrl: 'templates/tab-new.html',
+        controller: 'NewCtrl as new'
+      }
+    }
+  })
+
+  .state('tab.game', {
+    url: '/game',
+    views: {
+      'tab-game': {
+        templateUrl: 'templates/tab-game.html',
+        controller: 'GameCtrl as game'
+      }
+    }
+  })
 
   .state('tab.account', {
     url: '/account',
     views: {
       'tab-account': {
         templateUrl: 'templates/tab-account.html',
-        controller: 'AccountCtrl'
+        controller: 'AccountCtrl as account'
+      }
+    }
+  })
+
+  .state('tab.account-login', {
+    url: '/account/login',
+    views: {
+      'tab-account' : {
+        templateUrl: 'templates/account-login.html',
+        controller: 'AccountLoginCtrl as login'
+      }
+    }
+  })
+
+  .state('tab.account-register', {
+    url: '/account/register',
+    views: {
+      'tab-account' : {
+        templateUrl: 'templates/account-register.html',
+        controller: 'AccountRegisterCtrl as register'
+      }
+    }
+  })
+
+  .state('tab.account-password', {
+    url: '/account/password',
+    views: {
+      'tab-account' : {
+        templateUrl: 'templates/account-password.html',
+        controller: 'AccountPasswordCtrl as password'
       }
     }
   });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/dash');
+  $urlRouterProvider.otherwise('/tab/people');
 
 });
+angular.module('app.controllers', []);
+angular.module('app.services', []);

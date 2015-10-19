@@ -1,0 +1,11 @@
+<ion-view view-title="People">
+  <ion-content class="padding">
+    <ion-list>
+      <ion-item class="item" ng-repeat="person in people.people">
+        <p>{{person}}</p>
+        <h2>{{person.firstName}} {{person.lastName}}</h2>
+        <h3>{{person.groups}}</h3>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

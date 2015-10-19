@@ -1,0 +1,30 @@
+<ion-view title="New">
+    <ion-content has-header="true" has-tabs="true" padding="true">
+        <div class="list">
+            <label class="item item-input">
+                <span class="input-label">First Name</span>
+                <input type="text" ng-model="new.friend.firstName">
+            </label>
+            <label class="item item-input">
+                <span class="input-label">Last Name</span>
+                <input type="text" ng-model="new.friend.lastName">
+            </label>
+            <label class="item item-input">
+                <span class="input-label">Screen Name</span>
+                <input type="text" ng-model="new.friend.screenName">
+            </label>
+            <label class="item item-input">
+                <span class="input-label">Dropdown with groups</span>
+                <input type="text" ng-model="new.friend.groups">
+            </label>
+            <label class="item item-input">
+                <span class="input-label">Add facts (maybe on 2nd screen)</span>
+                <input type="text">
+            </label>
+        </div>
+        <div class="assertive" ng-show="error.message">{{error.message}}</div>
+        <button class="button button-block button-positive" ng-click="new.addFriend()">
+            Add friend
+        </button>
+    </ion-content>
+</ion-view>
