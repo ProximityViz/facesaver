@@ -56,7 +56,12 @@ angular.module('app', [
     views: {
       'tab-people': {
         templateUrl: 'templates/person-detail.html',
-        controller: 'PersonCtrl as person'
+        controller: 'PersonCtrl as person',
+        resolve: {
+          data: function(ParseFactory, $stateParams) {
+            return ParseFactory.getPerson($stateParams.personId);
+          }
+        }
       }
     }
   })

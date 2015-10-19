@@ -1,5 +1,5 @@
 angular.module('app.services')
-.factory('ParseFactory', ['$rootScope', function($rootScope) {
+.factory('ParseFactory', ['$q', function($q) {
 	var people = [];
 
 	// define parse models
@@ -91,6 +91,31 @@ angular.module('app.services')
 		Parse.User.logOut();
 	};
 
+	function getPerson(id) {
+		var deferred = $q.defer();
+		var query = new Parse.Query(Friend);
+		query.equalTo("objectId", id);
+		query.find({
+			success: function(results) {
+				console.log(results);
+				var person = {
+					id: results[0].id,
+					firstName: results[0].get('firstName'),
+					lastName: results[0].get('lastName'),
+					screenName: results[0].get('screenName')
+				};
+				deferred.resolve(person);
+				// return person;
+			},
+			error: function(object, error) {
+				console.log(error);
+				deferred.reject(error);
+			}
+		});
+
+		return deferred.promise;
+	};
+
 	function getPeople(callback) {
 		console.log(loggedInUser);
 		console.log(loggedInUser.id);
@@ -98,9 +123,7 @@ angular.module('app.services')
 			initSamplePeople();
 		} else {
 			var query = new Parse.Query(Friend);
-			// query.equalTo("user", loggedInUser);
-			console.log(Parse.User.current());
-			query.equalTo("user", Parse.User.current());
+			query.equalTo("user", loggedInUser);
 			// query.include("lastName");
 			query.find({
 				success: function(results) {
@@ -108,12 +131,14 @@ angular.module('app.services')
 					people.length = 0; // empty "people" array
 					for (var i = 0; i < results.length; i++) {
 						var person = {
+							id: results[i].id,
 							firstName: results[i].get('firstName'),
 							lastName: results[i].get('lastName'),
 							screenName: results[i].get('screenName')
 						};
 						people.push(person);
 					};
+					console.log(people);
 					return people;
 				},
 				error: function(object, error) {
@@ -154,6 +179,7 @@ angular.module('app.services')
 		logIn: logIn,
 		signUp: signUp,
 		logOut: logOut,
+		getPerson: getPerson,
 		getPeople: getPeople,
 		addPerson: addPerson,
 		getUser: getUser
