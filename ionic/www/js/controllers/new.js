@@ -7,10 +7,8 @@ angular.module('app.controllers')
 	this.addFriend = function() {
 		// this.friend.user = $rootScope.user.id;
 		console.log(this.friend);
-		ParseFactory.addPerson(this.friend).success(function(data) {
-			// $state.go to friend;
-			console.log(data);
-		});
+		ParseFactory.addPerson(this.friend);
+		// $state.go to friend;
 	}
 
 }])

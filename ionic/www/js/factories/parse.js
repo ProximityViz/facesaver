@@ -98,11 +98,22 @@ angular.module('app.services')
 			initSamplePeople();
 		} else {
 			var query = new Parse.Query(Friend);
-			query.equalTo("user", "RUxBysnq8D");
+			// query.equalTo("user", loggedInUser);
+			console.log(Parse.User.current());
+			query.equalTo("user", Parse.User.current());
+			// query.include("lastName");
 			query.find({
 				success: function(results) {
-					people = results;
 					console.log(results);
+					people.length = 0; // empty "people" array
+					for (var i = 0; i < results.length; i++) {
+						var person = {
+							firstName: results[i].get('firstName'),
+							lastName: results[i].get('lastName'),
+							screenName: results[i].get('screenName')
+						};
+						people.push(person);
+					};
 					return people;
 				},
 				error: function(object, error) {
@@ -113,22 +124,19 @@ angular.module('app.services')
 		return people;
 	};
 
-	function addPerson(person) {
-		var Friend = Parse.Object.extend("Friend");
+	function addPerson(person, callback) {
 		var friend = new Friend();
 
-		friend.save({
-			firstName: person.firstName,
-			lastName: person.lastName,
-			screenName: person.screenName,
-			user: {
-				__type: 'Pointer',
-				className: 'User',
-				objectId: $rootScope.user.id
-			}
-		},{
+		friend.set('user', loggedInUser);
+		friend.set('firstName', person.firstName);
+		friend.set('lastName', person.lastName);
+		friend.set('screenName', person.screenName);
+		friend.setACL(new Parse.ACL(Parse.User.current())); // read and write by this user only
+		friend.save(null, {
 			success: function(friend) {
 				console.log('success');
+				// callback();
+				getPeople();
 			},
 			error: function(friend, error) {
 				console.log('error');
