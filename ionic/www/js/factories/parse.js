@@ -117,17 +117,16 @@ angular.module('app.services')
 	};
 
 	function getPeople(callback) {
-		console.log(loggedInUser);
-		console.log(loggedInUser.id);
+		var deferred = $q.defer();
 		if (!loggedInUser) {
 			initSamplePeople();
+			deferred.resolve(people);
 		} else {
 			var query = new Parse.Query(Friend);
 			query.equalTo("user", loggedInUser);
 			// query.include("lastName");
 			query.find({
 				success: function(results) {
-					console.log(results);
 					people.length = 0; // empty "people" array
 					for (var i = 0; i < results.length; i++) {
 						var person = {
@@ -138,15 +137,15 @@ angular.module('app.services')
 						};
 						people.push(person);
 					};
-					console.log(people);
-					return people;
+					deferred.resolve(people);
 				},
 				error: function(object, error) {
 					console.log(error);
+					deferred.reject(error);
 				}
 			});
 		}
-		return people;
+		return deferred.promise;
 	};
 
 	function addPerson(person, callback) {

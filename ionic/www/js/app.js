@@ -41,13 +41,12 @@ angular.module('app', [
     views: {
       'tab-people': {
         templateUrl: 'templates/tab-people.html',
-        controller: 'PeopleCtrl as people'
-        // ,
-        // resolve: {
-        //   people: function(ParseFactory) {
-        //     return ParseFactory.getPeople();
-        //   }
-        // }
+        controller: 'PeopleCtrl as people',
+        resolve: {
+          people: function(ParseFactory) {
+            return ParseFactory.getPeople();
+          }
+        }
       }
     }
   })

@@ -1,9 +1,8 @@
 angular.module('app.controllers')
-// .controller('PeopleCtrl', ['people', function(people) {
-.controller('PeopleCtrl', ['ParseFactory', function(ParseFactory) {
+.controller('PeopleCtrl', ['people', function(people) {
 	console.log('PeopleCtrl initialized');
 
-	this.people = ParseFactory.getPeople();
+	this.people = people;
 
 	console.log(this.people);
 }])
