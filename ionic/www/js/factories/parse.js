@@ -1,10 +1,12 @@
 angular.module('app.services')
 .factory('ParseFactory', ['$q', function($q) {
 	var people = [];
+	var groups = [];
 
 	// define parse models
 	var Friend = Parse.Object.extend("Friend");
 	// var FriendCollection = Parse.Collection.extend({ model:Friend });
+	var Group = Parse.Object.extend("UserGroup");
 
 	Parse.initialize(PARSE_CREDENTIALS.applicationId, PARSE_CREDENTIALS.javascriptKey);
 	var loggedInUser = Parse.User.current();
@@ -124,7 +126,6 @@ angular.module('app.services')
 		} else {
 			var query = new Parse.Query(Friend);
 			query.equalTo("user", loggedInUser);
-			// query.include("lastName");
 			query.find({
 				success: function(results) {
 					people.length = 0; // empty "people" array
@@ -168,6 +169,53 @@ angular.module('app.services')
 		});
 	};
 
+	function getGroups() {
+		var deferred = $q.defer();
+		if (!loggedInUser) {
+			// handle this
+			deferred.resolve();
+		} else {
+			var query = new Parse.Query(Group);
+			query.equalTo("user", loggedInUser);
+			query.find({
+				success: function(results) {
+					groups.length = 0; // empty "groups" array
+					for (var i = 0; i < results.length; i++) {
+						var group = {
+							id: results[i].id,
+							name: results[i].get('name')
+						};
+						groups.push(group);
+					};
+					console.log(groups);
+					deferred.resolve(groups);
+				},
+				error: function(object, error) {
+					console.log(error);
+					deferred.reject(error);
+				}
+			});
+		}
+		return deferred.promise;
+	};
+
+	function addGroup(name) {
+		var group = new Group();
+
+		group.set('user', loggedInUser);
+		group.set('name', name);
+		group.setACL(new Parse.ACL(Parse.User.current()));
+		group.save(null, {
+			success: function(group) {
+				console.log('success');
+				getGroups();
+			},
+			error: function(group, error) {
+				console.log('error');
+			}
+		});
+	};
+
 	function getUser() {
 		if (loggedInUser) {
 			return loggedInUser;
@@ -181,6 +229,8 @@ angular.module('app.services')
 		getPerson: getPerson,
 		getPeople: getPeople,
 		addPerson: addPerson,
+		getGroups: getGroups,
+		addGroup: addGroup,
 		getUser: getUser
 	}
 }])

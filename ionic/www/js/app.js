@@ -66,23 +66,28 @@ angular.module('app', [
   })
 
   .state('tab.groups', {
-      url: '/groups',
-      views: {
-        'tab-groups': {
-          templateUrl: 'templates/tab-groups.html',
-          controller: 'GroupsCtrl as groups'
+    url: '/groups',
+    views: {
+      'tab-groups': {
+        templateUrl: 'templates/tab-groups.html',
+        controller: 'GroupsCtrl as groups',
+        resolve: {
+          groups: function(ParseFactory) {
+            return ParseFactory.getGroups();
+          }
         }
       }
-    })
-    .state('tab.group-detail', {
-      url: '/groups/:groupId',
-      views: {
-        'tab-groups': {
-          templateUrl: 'templates/group-detail.html',
-          controller: 'GroupDetailCtrl as group'
-        }
+    }
+  })
+  .state('tab.group-detail', {
+    url: '/groups/:groupId',
+    views: {
+      'tab-groups': {
+        templateUrl: 'templates/group-detail.html',
+        controller: 'GroupDetailCtrl as group'
       }
-    })
+    }
+  })
 
   .state('tab.new', {
     url: '/new',
