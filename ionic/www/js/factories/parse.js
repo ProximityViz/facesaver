@@ -2,6 +2,7 @@ angular.module('app.services')
 .factory('ParseFactory', ['$q', function($q) {
 	var people = [];
 	var groups = [];
+	var person;
 
 	// define parse models
 	var Friend = Parse.Object.extend("Friend");
@@ -100,11 +101,13 @@ angular.module('app.services')
 		query.find({
 			success: function(results) {
 				console.log(results);
-				var person = {
+				person = {
 					id: results[0].id,
 					firstName: results[0].get('firstName'),
 					lastName: results[0].get('lastName'),
-					screenName: results[0].get('screenName')
+					screenName: results[0].get('screenName'),
+					groups: results[0].get('groups'),
+					facts: results[0].get('facts')
 				};
 				deferred.resolve(person);
 				// return person;
@@ -163,6 +166,7 @@ angular.module('app.services')
 			success: function(friend) {
 				console.log('success');
 				console.log(friend);
+				person = friend;
 				getPeople();
 				deferred.resolve(friend);
 			},
@@ -173,6 +177,23 @@ angular.module('app.services')
 		});
 		return deferred.promise;
 	};
+
+	function addFact(id, fact) {
+		var query = new Parse.Query(Friend);
+		query.get(id, {
+			success: function(friend) {
+				console.log(friend);
+				var facts = friend.get('facts');
+				if (typeof(facts) === 'undefined') {
+					facts = [];
+				};
+				facts.push(fact);
+				console.log(facts);
+				friend.set('facts', facts);
+				friend.save();
+			}
+		});
+	}
 
 	function getGroups() {
 		var deferred = $q.defer();
@@ -239,6 +260,7 @@ angular.module('app.services')
 		getPerson: getPerson,
 		getPeople: getPeople,
 		addPerson: addPerson,
+		addFact: addFact,
 		getGroups: getGroups,
 		addGroup: addGroup,
 		getUser: getUser

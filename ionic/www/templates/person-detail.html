@@ -1,9 +1,29 @@
-<ion-view view-title="INSERT NAME">
+<ion-view view-title="{{person.person.firstName || person.person.screenName}}">
   <ion-content class="padding">
     <img src="http://lorempixel.com/100/100/people" style="width: 100px; height: 100px">
-    <h1>Test: {{person.person.firstName}}</h1>
-    <p>
-      {{person.person.firstName}}
-    </p>
+    <h1>{{person.person.firstName}} {{person.person.lastName}}</h1>
+    <h2>Screen name: {{person.person.screenName}}</h2>
+    <ion-list>
+      <ion-item class="item-divider item-icon-right">
+        Groups
+        <!-- <i class="icon ion-plus"></i> -->
+        <!-- how to add groups here? use chips or modal? -->
+      </ion-item>
+      <ion-item ng-repeat="group in person.person.groups">
+        {{group.name}}
+      </ion-item>
+      <ion-item class="item-divider item-icon-right">
+        Facts
+        <i class="icon ion-plus" ng-click="person.showFactInput = !person.showFactInput" ng-if="!person.showFactInput"></i>
+      </ion-item>
+      <ion-item class="item-divider item-icon-right" ng-show="person.showFactInput">
+        <input type="text" placeholder="Type fact here" ng-model="person.fact">
+        <i class="icon ion-plus" ng-click="person.addFact(person.fact)" ng-if="person.showFactInput"></i>
+        </ion-item>
+      </ion-item>
+      <ion-item ng-repeat="fact in person.person.facts track by $index">
+        {{fact}}
+      </ion-item>
+    </ion-list>
   </ion-content>
 </ion-view>
