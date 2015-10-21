@@ -53,7 +53,7 @@ angular.module('app', [
       }
     }
   })
-  .state('tab.person-detail', {
+  .state('tab.person-detail/:personId', {
     url: '/people/:personId',
     views: {
       'tab-people': {

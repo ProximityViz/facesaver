@@ -1,6 +1,6 @@
 angular.module('app.controllers')
-.controller('NewCtrl', ['ParseFactory', '$rootScope', 'groups', // groups is resolved
-								function(ParseFactory,   $rootScope,   groups) {
+.controller('NewCtrl', ['ParseFactory', '$rootScope', '$state', '$ionicLoading', 'groups', // groups is resolved
+								function(ParseFactory,   $rootScope,   $state,   $ionicLoading,   groups) {
 	console.log('NewCtrl initialized');
 
 	this.friend = {};
@@ -48,12 +48,16 @@ angular.module('app.controllers')
 	}
 
 	this.addFriend = function() {
-		// ionicLoading
+		$ionicLoading.show();
 		this.friend.groups = groupsToSave(this.selectedGroups);
 		// this.friend.user = $rootScope.user.id;
 		var friendParseInfo = ParseFactory.addPerson(this.friend).then(function(response) {
 			var friendParseInfo = response;
 			console.log(friendParseInfo.id);
+			$state.go('tab.people').then(function() {
+				$ionicLoading.hide();
+				$state.go('tab.person-detail/:personId',{personId: friendParseInfo.id});
+			});
 		});
 		// $state.go to friend;
 	}
