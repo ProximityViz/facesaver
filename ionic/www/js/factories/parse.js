@@ -149,24 +149,29 @@ angular.module('app.services')
 		return deferred.promise;
 	};
 
-	function addPerson(person, callback) {
+	function addPerson(person) {
+		var deferred = $q.defer();
 		var friend = new Friend();
 
 		friend.set('user', loggedInUser);
 		friend.set('firstName', person.firstName);
 		friend.set('lastName', person.lastName);
 		friend.set('screenName', person.screenName);
+		friend.set('groups', person.groups);
 		friend.setACL(new Parse.ACL(Parse.User.current())); // read and write by this user only
 		friend.save(null, {
 			success: function(friend) {
 				console.log('success');
-				// callback();
+				console.log(friend);
 				getPeople();
+				deferred.resolve(friend);
 			},
 			error: function(friend, error) {
 				console.log('error');
+				deferred.reject(error);
 			}
 		});
+		return deferred.promise;
 	};
 
 	function getGroups() {

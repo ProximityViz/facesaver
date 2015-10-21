@@ -1,7 +1,10 @@
 angular.module('app', [
   'ionic', 
   'app.controllers', 
-  'app.services'])
+  'app.services',
+  'ngAnimate',
+  'ngAria',
+  'ngMaterial'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -94,7 +97,12 @@ angular.module('app', [
     views: {
       'tab-new': {
         templateUrl: 'templates/tab-new.html',
-        controller: 'NewCtrl as new'
+        controller: 'NewCtrl as new',
+        resolve: {
+          groups: function(ParseFactory) {
+            return ParseFactory.getGroups();
+          }
+        }
       }
     }
   })
