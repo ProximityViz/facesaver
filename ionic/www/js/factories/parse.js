@@ -200,6 +200,7 @@ angular.module('app.services')
 	};
 
 	function addGroup(name) {
+		var deferred = $q.defer();
 		var group = new Group();
 
 		group.set('user', loggedInUser);
@@ -208,12 +209,15 @@ angular.module('app.services')
 		group.save(null, {
 			success: function(group) {
 				console.log('success');
-				getGroups();
+				// getGroups();
+				deferred.resolve(group);
 			},
 			error: function(group, error) {
 				console.log('error');
+				deferred.reject(error);
 			}
 		});
+		return deferred.promise;
 	};
 
 	function getUser() {
