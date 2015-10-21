@@ -1,7 +1,7 @@
 <ion-view view-title="People">
   <ion-content class="padding">
     <ion-list>
-      <ion-item class="item" ng-repeat="person in people.people" ng-href="#/tab/people/{{person.id}}">
+      <ion-item class="item" ng-repeat="person in people.people" ng-click="people.goToPerson(person.id)">
         <h2>{{person.firstName}} {{person.lastName}}</h2>
         <h3 ng-if="person.screenName">Screen name: {{person.screenName}}</h3>
         <h3>{{person.groups}}</h3>

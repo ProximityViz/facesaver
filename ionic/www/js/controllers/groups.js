@@ -1,6 +1,6 @@
 angular.module('app.controllers')
-.controller('GroupsCtrl', ['$scope', '$ionicModal', 'ParseFactory', 'groups', // groups is resolved 
-									 function($scope,   $ionicModal,   ParseFactory,   groups) {
+.controller('GroupsCtrl', ['$scope', '$ionicModal', '$ionicLoading', 'ParseFactory', 'groups', // groups is resolved 
+									 function($scope,   $ionicModal,   $ionicLoading,   ParseFactory,   groups) {
 	console.log('GroupsCtrl initialized');
 
 	this.group = ""; // for adding a new group inside ionicModal
@@ -14,10 +14,10 @@ angular.module('app.controllers')
 	});
 
 	this.createGroup = function() {
+		$ionicLoading.show();
 		ParseFactory.addGroup(this.group).then(function() {
-			groups = ParseFactory.getGroups().then(function() {
-				$scope.add.hide();
-			});
+			$ionicLoading.hide();
+			$scope.add.hide();
 		});
 	};
 

@@ -214,8 +214,9 @@ angular.module('app.services')
 		group.save(null, {
 			success: function(group) {
 				console.log('success');
-				// getGroups();
-				deferred.resolve(group);
+				getGroups().then(function() {
+					deferred.resolve(group);
+				});
 			},
 			error: function(group, error) {
 				console.log('error');

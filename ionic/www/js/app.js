@@ -5,7 +5,12 @@ angular.module('app', [
   'ngAnimate',
   'ngAria',
   'ngMaterial'])
-
+.constant('$ionicLoadingConfig', {
+  duration: 10000,
+  hideOnStateChange: false,
+  showBackdrop: true,
+  content: 'Loading...'
+})
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
