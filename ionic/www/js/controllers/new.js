@@ -12,10 +12,12 @@ angular.module('app.controllers')
 	this.searchText = null;
 	this.querySearch = querySearch;
 	this.groups = groups;
-	groups.map(function(group) {
-		group._lowername = group.name.toLowerCase();
-		return group;
-	});
+	if (typeof(groups) !== 'undefined') {
+		groups.map(function(group) {
+			group._lowername = group.name.toLowerCase();
+			return group;
+		});
+	};
 
 	console.log(groups);
 
